@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "628554963816",
+    "project_id": "interprep-56c89",
+    "storage_bucket": "interprep-56c89.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628554963816:android:c57c668fcfa8e6865d94dd",
+        "android_client_info": {
+          "package_name": "com.example.interprep"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKanyM2QG8WsC4lNqIt1Sm_K7arakTv_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
