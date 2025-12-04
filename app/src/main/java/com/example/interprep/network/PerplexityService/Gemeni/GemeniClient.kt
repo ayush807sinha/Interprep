@@ -17,7 +17,7 @@ object GemeniClient {
             .addInterceptor { chain ->
                 val original = chain.request()
                 val newUrl = original.url.newBuilder()
-                    .addQueryParameter("key", geminiApiKey) // ✅ Gemini requires ?key=
+                    .addQueryParameter("key", geminiApiKey) 
                     .build()
 
                 val newRequest = original.newBuilder()
