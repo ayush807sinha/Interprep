@@ -27,7 +27,7 @@ import com.example.interprep.viewmodel.VoiceInterviewViewModelFactory
 fun AIBOT() {
     val context = LocalContext.current
 
-    // ✅ Use Gemini key now
+   
     val viewModel: VoiceInterviewViewModel = viewModel(
         factory = VoiceInterviewViewModelFactory(context, geminiApiKey)
     )
