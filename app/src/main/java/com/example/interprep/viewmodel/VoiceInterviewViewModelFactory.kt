@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 
 class VoiceInterviewViewModelFactory(
     private val context: Context,
-    private val geminiApiKey: String   // ✅ rename to match Gemini usage
+    private val geminiApiKey: String   
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
