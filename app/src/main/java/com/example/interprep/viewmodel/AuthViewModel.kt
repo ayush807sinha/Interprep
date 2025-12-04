@@ -36,7 +36,7 @@ class AuthViewModel @Inject constructor(
             _signInState.value = ResultState.Loading
             try {
                 val result = authRepository.signIn(email, password)
-                _signInState.value = result // Success or Error
+                _signInState.value = result 
             } catch (e: Exception) {
                 _signInState.value = ResultState.Error(e.message ?: "Unknown error")
             }
