@@ -75,9 +75,7 @@ Now generate one question following the above rules.
             ?.trim()
             ?: "No question found."
 
-        // ───────────────────────────────────────────────
-        // Parse the AI-generated content
-        // ───────────────────────────────────────────────
+      
         val questionText = content.substringAfter("Question:", "").substringBefore("Options:").trim()
 
         val optionsBlock = content.substringAfter("Options:", "").substringBefore("Answer:").trim()
