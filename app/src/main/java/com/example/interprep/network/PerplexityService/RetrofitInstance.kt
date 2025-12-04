@@ -8,13 +8,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    // 🔐 Replace with your actual API key securely (ideally store in local.properties or BuildConfig)
+    
      val API_KEY = perplexityKey
 
-    // 🌐 Base URL for Perplexity API
+    
     private const val BASE_URL = "https://api.perplexity.ai/"
-
-    // 🧩 OkHttp client with Authorization header
+ 
     private val client: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -27,7 +26,6 @@ object RetrofitInstance {
             .build()
     }
 
-    // 🚀 Retrofit instance for Perplexity API
     val api: PerplexityApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
