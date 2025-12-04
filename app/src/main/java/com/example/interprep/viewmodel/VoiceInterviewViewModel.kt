@@ -27,9 +27,7 @@ class VoiceInterviewViewModel(
     private val geminiApiKey: String
 ) : ViewModel() {
 
-    // ───────────────────────────────────────────────
-    // UI States
-    // ───────────────────────────────────────────────
+   
     var isInterviewStarted = mutableStateOf(false)
         private set
     var aiText = mutableStateOf("Press Start to begin the interview.")
@@ -39,19 +37,15 @@ class VoiceInterviewViewModel(
     var processing = mutableStateOf(false)
         private set
 
-    // ───────────────────────────────────────────────
-    // Helpers
-    // ───────────────────────────────────────────────
+  
     private val sttHelper = SpeechToTextHelper(context)
     private var textToSpeech: TextToSpeech? = null
     private var conversationJob: Job? = null
 
-    // ✅ Conversation memory for Gemini
+    
     private val conversationHistory = mutableListOf<GeminiContent>()
 
-    // ───────────────────────────────────────────────
-    // Gemini API Setup
-    // ───────────────────────────────────────────────
+  
     private val geminiApi = GemeniClient
         .getRetrofit(
             baseUrl = "https://generativelanguage.googleapis.com/v1beta/",
@@ -59,9 +53,7 @@ class VoiceInterviewViewModel(
         )
         .create(GeminiApiService::class.java)
 
-    // ───────────────────────────────────────────────
-    // Initialization
-    // ───────────────────────────────────────────────
+  
     init {
         textToSpeech = TextToSpeech(context) { status ->
             if (status == TextToSpeech.SUCCESS) {
@@ -73,15 +65,13 @@ class VoiceInterviewViewModel(
         }
     }
 
-    // ───────────────────────────────────────────────
-    // Start Interview Flow
-    // ───────────────────────────────────────────────
+    
     fun startInterview(jobRole: String, skills: String, experience: String) {
         if (isInterviewStarted.value) return
 
         isInterviewStarted.value = true
         aiText.value = "Starting interview for $jobRole..."
-        conversationHistory.clear() // 🧹 Reset any previous interview
+        conversationHistory.clear() 
 
         val prompt = """
 You are a strict and professional **AI Interviewer** conducting a mock interview for the role of $jobRole.
@@ -118,12 +108,10 @@ Then immediately ask your first question.
         stopAll()
         aiText.value = "Interview ended."
         isInterviewStarted.value = false
-        conversationHistory.clear() // 🧹 Clear history
+        conversationHistory.clear() 
     }
 
-    // ───────────────────────────────────────────────
-    // Voice Input Flow
-    // ───────────────────────────────────────────────
+    
     fun startConversationOnce() {
         if (listening.value || processing.value) return
 
@@ -145,16 +133,14 @@ Then immediately ask your first question.
         )
     }
 
-    // ───────────────────────────────────────────────
-    // Process Gemini Request (with memory)
-    // ───────────────────────────────────────────────
+  
     private fun processUserText(userText: String, aiStarts: Boolean = false) {
         processing.value = true
         if (!aiStarts) aiText.value = "You said: $userText\nThinking..."
 
         conversationJob = viewModelScope.launch(Dispatchers.IO) {
             try {
-                // 1️⃣ Add user message to conversation
+                
                 conversationHistory.add(
                     GeminiContent(
                         role = "user",
@@ -162,10 +148,10 @@ Then immediately ask your first question.
                     )
                 )
 
-                // 2️⃣ Build request with full history
+                
                 val request = GeminiRequest(contents = conversationHistory)
 
-                // 3️⃣ Generate response
+    
                 val response = geminiApi.generateContent(request)
 
                 val reply = response.candidates
@@ -176,7 +162,7 @@ Then immediately ask your first question.
                     ?.text
                     ?: "No response from AI."
 
-                // 4️⃣ Add AI reply to conversation memory
+                
                 conversationHistory.add(
                     GeminiContent(
                         role = "model",
@@ -184,7 +170,7 @@ Then immediately ask your first question.
                     )
                 )
 
-                // 5️⃣ Speak and display
+              
                 aiText.value = "AI: $reply"
                 speakText(reply)
 
@@ -206,9 +192,7 @@ Then immediately ask your first question.
         }
     }
 
-    // ───────────────────────────────────────────────
-    // Text-to-Speech Handling
-    // ───────────────────────────────────────────────
+   
     private fun speakText(text: String) {
         val utteranceId = "tts_${System.currentTimeMillis()}"
 
@@ -233,9 +217,7 @@ Then immediately ask your first question.
         textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
     }
 
-    // ───────────────────────────────────────────────
-    // Cleanup
-    // ───────────────────────────────────────────────
+    
     fun stopAll() {
         sttHelper.stopListening()
         conversationJob?.cancel()
